@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Guy AI Masterclass - Complete Implementation Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #F4FAF4 0%, #E4F3E4 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #FF9800 0%, #F44336 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .intro {
+            background: #f8f9fa;
+            padding: 30px;
+            border-left: 5px solid #FF9800;
+            margin: 30px;
+        }
+        
+        .intro h2 {
+            color: #F44336;
+            margin-bottom: 15px;
+        }
+        
+        .team-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #fff;
+        }
+        
+        .team-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .team-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            padding-bottom: 10px;
+        }
+        
+        .team-card .focus {
+            background: rgba(255,255,255,0.2);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        
+        .team-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .team-card ul li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .team-card ul li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #FFD700;
+            font-weight: bold;
+        }
+        
+        .section {
+            padding: 40px 30px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+        }
+        
+        .section h2 {
+            color: #F44336;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #FF9800;
+            display: inline-block;
+        }
+        
+        .section h3 {
+            color: #667eea;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-left: 15px;
+            border-left: 4px solid #FF9800;
+        }
+        
+        .section h4 {
+            color: #764ba2;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .step {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .step-number {
+            background: #FF9800;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .prompt-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .prompt-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .warning {
+            background: #f8d7da;
+            border: 2px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .warning:before {
+            content: "⚠️ ";
+            font-weight: bold;
+        }
+        
+        .success {
+            background: #d4edda;
+            border: 2px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .success:before {
+            content: "✅ ";
+            font-weight: bold;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            border: 2px solid #bee5eb;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .info:before {
+            content: "ℹ️ ";
+            font-weight: bold;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        table tr:hover {
+            background: #e9ecef;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px;
+        }
+        
+        .toc h3 {
+            color: #F44336;
+            margin-bottom: 20px;
+            padding-left: 0;
+            border-left: none;
+        }
+        
+        .toc ul {
+            list-style: none;
+        }
+        
+        .toc ul li {
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .toc ul li:last-child {
+            border-bottom: none;
+        }
+        
+        .toc a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .toc a:hover {
+            color: #F44336;
+        }
+        
+        footer {
+            background: #2d2d2d;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        footer h3 {
+            color: #FF9800;
+            margin-bottom: 15px;
+        }
+        
+        .key-points {
+            background: linear-gradient(135deg, #FA8BFF 0%, #2BD2FF 90%, #2BFF88 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .key-points h4 {
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .key-points ul {
+            list-style: none;
+        }
+        
+        .key-points ul li {
+            background: rgba(255,255,255,0.9);
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            color: #333;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .team-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: 20px 15px;
+            }
+            
+            table {
+                font-size: 0.9em;
+            }
+        }
+        
+        .member-1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .member-2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .member-3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        
+        ul, ol {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        ul li, ol li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Amazon Guy AI Masterclass</h1>
+            <p>Complete Implementation Guide</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">LEDSone | DCVoltage | SRM Supplies | Homin GmbH</p>
+        </header>
+
+        <div class="intro">
+            <h2>📋 Overview - What We're Going to Do</h2>
+            <p><strong>Webinar Speakers:</strong></p>
+            <ul>
+                <li><strong>Elizabeth Green</strong> - Jungler (Amazon Ads Agency Co-Founder)</li>
+                <li><strong>John Aspenol</strong> - Aspie Merchandising (CEO & Founder)</li>
+                <li><strong>Noah</strong> - My Amazon Guy (VP of Sales & Marketing)</li>
+            </ul>
+            <p style="margin-top: 15px;"><strong>Goal:</strong> Use AI to scale your Amazon business - for listings, PPC, and workflow automation.</p>
+            <p><strong>Team Structure:</strong> Assign 3 different AI strategies to 3 account holders.</p>
+        </div>
+
+        <div class="toc">
+            <h3>📑 Table of Contents</h3>
+            <ul>
+                <li><a href="#team-overview">Account Holders Overview</a></li>
+                <li><a href="#member1">Account Holder 1 - Elizabeth's Custom GPT Method</a></li>
+                <li><a href="#member2">Account Holder 2 - John's A+ Content JSON Method</a></li>
+                <li><a href="#member3">Account Holder 3 - Noah's PPC Analysis Method</a></li>
+                <li><a href="#coordination">Team Coordination</a></li>
+                <li><a href="#tools-costs">Tools & Costs</a></li>
+                <li><a href="#critical-reminders">Critical Reminders</a></li>
+            </ul>
+        </div>
+
+        <div id="team-overview" class="team-overview">
+            <div class="team-card member-1">
+                <h3>👤 Account Holder 1</h3>
+                <div class="focus">Elizabeth's Method</div>
+                <p><strong>Focus:</strong> Custom GPTs & Workflow Automation</p>
+                <ul>
+                    <li>Search term analysis automation</li>
+                    <li>Engram analysis (root keywords)</li>
+                    <li>Team-sharable GPTs</li>
+                    <li>Repetitive task automation</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>Primary Tool:</strong> ChatGPT Plus</p>
+            </div>
+
+            <div class="team-card member-2">
+                <h3>👤 Account Holder 2</h3>
+                <div class="focus">John's Method</div>
+                <p><strong>Focus:</strong> A+ Content & Visual Creation</p>
+                <ul>
+                    <li>JSON code extraction</li>
+                    <li>Competitor analysis</li>
+                    <li>A+ content templates</li>
+                    <li>Image generation</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>Primary Tools:</strong> Gemini Pro + Claude</p>
+            </div>
+
+            <div class="team-card member-3">
+                <h3>👤 Account Holder 3</h3>
+                <div class="focus">Noah's Method</div>
+                <p><strong>Focus:</strong> PPC Campaign Optimization</p>
+                <ul>
+                    <li>Analyze 4 reports monthly</li>
+                    <li>Search term clustering</li>
+                    <li>Scale-up opportunities</li>
+                    <li>Fix/Kill decisions</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>Primary Tool:</strong> Gemini Pro</p>
+            </div>
+        </div>
+
+        <!-- ACCOUNT HOLDER 1 SECTION -->
+        <div id="member1" class="section">
+            <h2>👤 ACCOUNT HOLDER 1 - Elizabeth's Custom GPT Method</h2>
+            
+            <div class="info">
+                <strong>Main Goal:</strong> Automate repetitive PPC analysis tasks and provide easy insights to team members.
+            </div>
+
+            <h3>Quick Summary</h3>
+            <div class="step">
+                <p><strong>What You'll Do:</strong></p>
+                <ul>
+                    <li>Create Custom GPTs for repetitive Amazon tasks</li>
+                    <li>Automate search term + advertised product report analysis</li>
+                    <li>Share GPTs with team for consistent results</li>
+                    <li>Save 10-15 hours per week on manual analysis</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>Time Investment:</strong> 2-3 hours setup, then 5 minutes per week</p>
+                <p><strong>Difficulty:</strong> Beginner-friendly (⭐⭐☆☆☆)</p>
+            </div>
+
+            <h3>Step 1: ChatGPT Setup</h3>
+            <div class="step">
+                <p><span class="step-number">1</span><strong>Get ChatGPT Plus Account</strong></p>
+                <ul>
+                    <li>Visit: <a href="https://chat.openai.com" target="_blank">chat.openai.com</a></li>
+                    <li>Click "Upgrade to Plus" ($20/month = ₹1,650/month)</li>
+                    <li>Once subscribed, top-left corner → "Explore GPTs"</li>
+                    <li>Click "Create" button to start</li>
+                </ul>
+            </div>
+
+            <h3>Step 2: Programming Your GPT (Easy Method)</h3>
+            <div class="step">
+                <p><span class="step-number">2</span><strong>Use ChatGPT to Program ChatGPT!</strong></p>
+                
+                <div class="prompt-box">
+                    <h4>Copy-Paste This Prompt into ChatGPT:</h4>
+                    <pre>I want to create a custom GPT that analyzes Amazon PPC reports.
+
+It should:
+1. Accept two CSV files:
+   - Search Term Report
+   - Advertised Product Report
+
+2. Combine both reports automatically
+
+3. Perform engram analysis (identify root keywords)
+
+4. Separate high-performing vs low-performing keywords
+
+5. Give product-wise breakdown (individual ASIN analysis)
+
+6. Recommend specific actions with priority levels
+
+7. Output format should be:
+   - Section 1: Top Winners (scale these)
+   - Section 2: Opportunities (good potential)
+   - Section 3: Fix Candidates (reduce bids)
+   - Section 4: Kill List (negate keywords)
+
+My business rules:
+- Target ACOS: 25%
+- Minimum CTR acceptable: 0.3%
+- Minimum CVR acceptable: 10%
+
+Ask me questions to understand my workflow better, then write 
+detailed instructions for the GPT.</pre>
+                </div>
+
+                <p style="margin-top: 15px;"><strong>What Happens Next:</strong></p>
+                <ol>
+                    <li>ChatGPT will ask clarifying questions - answer them</li>
+                    <li>It will generate detailed GPT instructions</li>
+                    <li>Copy those instructions</li>
+                    <li>Paste into GPT builder "Instructions" field</li>
+                    <li>Give it a name: "Amazon PPC Analyzer Pro"</li>
+                    <li>Save the GPT</li>
+                </ol>
+            </div>
+
+            <h3>Step 3: Testing Your GPT</h3>
+            <div class="step">
+                <p><span class="step-number">3</span><strong>Test with Real Data</strong></p>
+                
+                <p><strong>Download Reports from Amazon:</strong></p>
+                <ol>
+                    <li>Seller Central → Advertising → Campaign Manager</li>
+                    <li>Reports → Search Term Report (last 30 days)</li>
+                    <li>Reports → Advertised Product Report (same period)</li>
+                    <li>Download both as CSV</li>
+                </ol>
+
+                <p style="margin-top: 15px;"><strong>Test the GPT:</strong></p>
+                <ol>
+                    <li>Open your created GPT</li>
+                    <li>Upload both CSV files</li>
+                    <li>Type: "Analyze these reports"</li>
+                    <li>Wait for output</li>
+                </ol>
+
+                <div class="success">
+                    If output looks good → You're done!<br>
+                    If not → Read next section on refinement
+                </div>
+            </div>
+
+            <h3>Step 4: Refinement (If Needed)</h3>
+            <div class="step">
+                <p><span class="step-number">4</span><strong>Improve the Output</strong></p>
+                
+                <div class="prompt-box">
+                    <h4>If Output Isn't Perfect, Tell ChatGPT:</h4>
+                    <pre>The GPT output had these issues:
+1. [Describe what went wrong]
+2. [What you wanted instead]
+
+Please rewrite ALL the GPT instructions to fix these issues.</pre>
+                </div>
+
+                <p style="margin-top: 15px;">Copy new instructions → Update GPT → Test again</p>
+                <p>Repeat 2-3 times until perfect!</p>
+            </div>
+
+            <h3>Step 5: Share with Team</h3>
+            <div class="step">
+                <p><span class="step-number">5</span><strong>Team Access</strong></p>
+                
+                <ol>
+                    <li>Open your GPT</li>
+                    <li>Top-right → "Share" button</li>
+                    <li>Select "Anyone with the link"</li>
+                    <li>Copy link and send to team</li>
+                </ol>
+
+                <div class="success">
+                    Now your whole team can use the same GPT for consistent analysis!
+                </div>
+            </div>
+
+            <h3>Weekly Workflow</h3>
+            <div class="step">
+                <h4>Every Monday (5 minutes):</h4>
+                <ol>
+                    <li>Download last week's reports from Amazon</li>
+                    <li>Upload to your GPT</li>
+                    <li>Get instant analysis</li>
+                    <li>Share insights with team</li>
+                </ol>
+            </div>
+
+            <div class="key-points">
+                <h4>🎯 Key Benefits - Account Holder 1</h4>
+                <ul>
+                    <li><strong>Time Saved:</strong> 10-15 hours/week → 5 minutes</li>
+                    <li><strong>Consistency:</strong> Same quality analysis every time</li>
+                    <li><strong>Team Scalability:</strong> Train once, use forever</li>
+                    <li><strong>Cost:</strong> $20/month, saves ₹20,000+ in labor</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ACCOUNT HOLDER 2 SECTION -->
+        <div id="member2" class="section">
+            <h2>👤 ACCOUNT HOLDER 2 - John's A+ Content JSON Method</h2>
+            
+            <div class="info">
+                <strong>Main Goal:</strong> Extract competitor A+ content as JSON code, customize for your brand, and provide clear direction to designers.
+            </div>
+
+            <h3>Quick Summary</h3>
+            <div class="step">
+                <p><strong>What You'll Do:</strong></p>
+                <ul>
+                    <li>Find best competitor A+ content modules</li>
+                    <li>Extract JSON code (structure blueprint)</li>
+                    <li>Customize for your brand</li>
+                    <li>Generate AI mockup</li>
+                    <li>Hand to designer for final polish</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>Time Investment:</strong> 3-4 hours learning, then 30 mins per module</p>
+                <p><strong>Difficulty:</strong> Intermediate (⭐⭐⭐☆☆)</p>
+            </div>
+
+            <h3>Tools Needed</h3>
+            <table>
+                <tr>
+                    <th>Tool</th>
+                    <th>Purpose</th>
+                    <th>Cost</th>
+                </tr>
+                <tr>
+                    <td>Claude (Free or Pro)</td>
+                    <td>JSON extraction (best hex codes)</td>
+                    <td>Free or $20/month</td>
+                </tr>
+                <tr>
+                    <td>Gemini Pro</td>
+                    <td>Image generation (Nano Banana)</td>
+                    <td>₹1,650/month</td>
+                </tr>
+                <tr>
+                    <td>Canva</td>
+                    <td>Swipe file storage</td>
+                    <td>Free or $13/month</td>
+                </tr>
+            </table>
+
+            <h3>Step 1: Create Swipe File</h3>
+            <div class="step">
+                <p><span class="step-number">1</span><strong>Collect Best Competitor Modules</strong></p>
+                
+                <ol>
+                    <li>Go to Amazon (UK, DE, FR, IT)</li>
+                    <li>Search your product category</li>
+                    <li>Find top 10 sellers</li>
+                    <li>Scroll to their A+ content</li>
+                    <li>Screenshot individual modules (not full page!)</li>
+                    <li>Save to Canva in organized folders:
+                        <ul>
+                            <li>"Hero Images"</li>
+                            <li>"Feature Comparison"</li>
+                            <li>"Benefits"</li>
+                            <li>"How to Use"</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <div class="warning">
+                    <strong>Important:</strong> Screenshot INDIVIDUAL modules, not the whole page. Each module = separate image.
+                </div>
+            </div>
+
+            <h3>Step 2: Extract JSON Code</h3>
+            <div class="step">
+                <p><span class="step-number">2</span><strong>Convert Image to Code Structure</strong></p>
+                
+                <p><strong>Using Claude (Recommended):</strong></p>
+                <ol>
+                    <li>Go to <a href="https://claude.ai" target="_blank">claude.ai</a></li>
+                    <li>Upload competitor A+ module screenshot</li>
+                    <li>Use this prompt:</li>
+                </ol>
+
+                <div class="prompt-box">
+                    <h4>Claude Prompt for JSON:</h4>
+                    <pre>Analyze this A+ content image and give me detailed JSON code.
+
+Include:
+- Complete layout structure
+- Exact hex color codes
+- Text hierarchy and positioning
+- Icon/graphic descriptions
+- Spacing and padding values
+- Font styles and sizes
+
+Make it detailed enough to recreate this design.</pre>
+                </div>
+
+                <p style="margin-top: 15px;"><strong>Example Output:</strong></p>
+                <pre>{
+  "layout": {
+    "type": "single_column",
+    "background": "#FFFFFF",
+    "padding": "40px"
+  },
+  "brandName": "Happy Notes",
+  "brandColor": "#6B4E9B",
+  "productImage": {
+    "position": "center",
+    "width": "400px"
+  },
+  "features": [
+    {
+      "icon": "checkmark",
+      "iconColor": "#4CAF50",
+      "text": "Long Lasting",
+      "fontSize": "18px"
+    }
+  ]
+}</pre>
+            </div>
+
+            <h3>Step 3: Customize JSON for Your Brand</h3>
+            <div class="step">
+                <p><span class="step-number">3</span><strong>Replace Competitor Info with Yours</strong></p>
+                
+                <pre>// Change these fields:
+"brandName": "Happy Notes" → "LEDSone"
+"brandColor": "#6B4E9B" → "#FF6600" (your hex code)
+"productName": "Sleep Pills" → "LED Strip 5M"
+"features": ["Better Sleep"] → ["App Control", "16M Colors"]</pre>
+
+                <div class="info">
+                    <strong>Keep Same:</strong> Layout structure, spacing, hierarchy<br>
+                    <strong>Change:</strong> All brand-specific text, colors, product info
+                </div>
+            </div>
+
+            <h3>Step 4: Generate AI Image</h3>
+            <div class="step">
+                <p><span class="step-number">4</span><strong>Create Visual from JSON</strong></p>
+                
+                <ol>
+                    <li>Open NEW Gemini chat</li>
+                    <li><strong>Turn ON "Create images"</strong></li>
+                    <li><strong>Turn ON "Thinking mode"</strong> (CRITICAL!)</li>
+                    <li>Paste this prompt with your JSON:</li>
+                </ol>
+
+                <div class="prompt-box">
+                    <h4>Gemini Image Generation Prompt:</h4>
+                    <pre>Generate an image based on the below JSON code:
+
+[paste your customized JSON here]
+
+Create a professional A+ content module matching this specification.</pre>
+                </div>
+
+                <div class="warning">
+                    <strong>Must Do:</strong>
+                    <ul>
+                        <li>✅ NEW chat (don't reuse old conversations)</li>
+                        <li>✅ Thinking Mode ON</li>
+                        <li>✅ Create Images ON</li>
+                        <li>❌ If any OFF → Poor quality output</li>
+                    </ul>
+                </div>
+
+                <p style="margin-top: 15px;">Gemini will generate mockup based purely on your JSON code!</p>
+            </div>
+
+            <h3>Step 5: Designer Handoff</h3>
+            <div class="step">
+                <p><span class="step-number">5</span><strong>Professional Polish</strong></p>
+                
+                <p><strong>Give Designer:</strong></p>
+                <ol>
+                    <li>AI-generated mockup (as reference)</li>
+                    <li>JSON code (exact specifications)</li>
+                    <li>Brand assets:
+                        <ul>
+                            <li>Logo files (PNG)</li>
+                            <li>Product photos (high-res)</li>
+                            <li>Hex color codes</li>
+                        </ul>
+                    </li>
+                    <li>Brief: "Match this structure exactly, replace with our assets"</li>
+                </ol>
+
+                <div class="success">
+                    <strong>Result:</strong> Designer delivers in 1-2 days vs 1-2 weeks traditional method!
+                </div>
+            </div>
+
+            <div class="key-points">
+                <h4>🎯 Key Benefits - Account Holder 2</h4>
+                <ul>
+                    <li><strong>Speed:</strong> 2 weeks → 2 days for A+ module</li>
+                    <li><strong>Quality:</strong> Copy proven competitor structures</li>
+                    <li><strong>Communication:</strong> 90% clearer designer brief</li>
+                    <li><strong>Cost:</strong> Less designer back-and-forth = lower cost</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ACCOUNT HOLDER 3 SECTION -->
+        <div id="member3" class="section">
+            <h2>👤 ACCOUNT HOLDER 3 - Noah's PPC Mega Prompt</h2>
+            
+            <div class="info">
+                <strong>Main Goal:</strong> Fully automate monthly PPC analysis, analyze 50+ campaigns in 30 minutes, and get actionable recommendations.
+            </div>
+
+            <h3>Quick Summary</h3>
+            <div class="step">
+                <p><strong>What You'll Do:</strong></p>
+                <ul>
+                    <li>Download 4 Amazon PPC reports monthly</li>
+                    <li>Upload to Google Sheets</li>
+                    <li>Run one mega prompt in Gemini</li>
+                    <li>Get complete analysis:
+                        <ul>
+                            <li>Search term clustering</li>
+                            <li>Scale-up opportunities</li>
+                            <li>Fix/Kill decisions</li>
+                            <li>7-day action plan</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>Time Investment:</strong> 1 hour setup, then 30 mins monthly</p>
+                <p><strong>Difficulty:</strong> Beginner-friendly (⭐⭐☆☆☆)</p>
+            </div>
+
+            <h3>Step 1: Setup</h3>
+            <div class="step">
+                <p><span class="step-number">1</span><strong>Get Gemini Pro</strong></p>
+                <ul>
+                    <li>Go to: <a href="https://gemini.google.com" target="_blank">gemini.google.com</a></li>
+                    <li>Subscribe to Pro (₹1,650/month)</li>
+                    <li><strong>Verify "Thinking mode" toggle is available</strong></li>
+                </ul>
+            </div>
+
+            <h3>Step 2: Download 4 Reports</h3>
+            <div class="step">
+                <p><span class="step-number">2</span><strong>Monthly Report Collection</strong></p>
+                
+                <p>Seller Central → Advertising → Reports:</p>
+                <ol>
+                    <li><strong>Search Term Report</strong> (last 30 days)</li>
+                    <li><strong>Targeting Report</strong> (last 30 days)</li>
+                    <li><strong>Placement Report</strong> (last 30 days)</li>
+                    <li><strong>Search Term Impression Share</strong> (last 30 days)</li>
+                </ol>
+
+                <p style="margin-top: 15px;">Download all as CSV files</p>
+            </div>
+
+            <h3>Step 3: Upload to Google Sheets</h3>
+            <div class="step">
+                <p><span class="step-number">3</span><strong>Organize Data</strong></p>
+                
+                <ol>
+                    <li>Create new Google Sheet: "PPC Analysis Dec 2024"</li>
+                    <li>Create 4 tabs:
+                        <ul>
+                            <li>Tab 1: Search Terms</li>
+                            <li>Tab 2: Targeting</li>
+                            <li>Tab 3: Placement</li>
+                            <li>Tab 4: Impression Share</li>
+                        </ul>
+                    </li>
+                    <li>Import each CSV to corresponding tab</li>
+                    <li>Share settings: "Anyone with link can view"</li>
+                    <li>Copy the Google Sheet link</li>
+                </ol>
+            </div>
+
+            <h3>Step 4: Run Mega Prompt</h3>
+            <div class="step">
+                <p><span class="step-number">4</span><strong>Complete PPC Analysis</strong></p>
+                
+                <div class="warning">
+                    <strong>Get Full Prompt:</strong> Email <a href="mailto:varnandigitweblanka@gmail.com">varnandigitweblanka@gmail.com</a> for the complete detailed mega prompt
+                </div>
+
+                <p><strong>Basic Prompt Structure:</strong></p>
+                <pre>I have 4 Amazon PPC reports in Google Sheets for analysis.
+
+ACCOUNT INFO:
+- Brand: LEDSone
+- Campaigns: 50+
+- Date Range: Last 30 days
+
+TARGETS:
+- ACOS Goal: 25%
+- TACOS Goal: 10%
+- Min CTR: 0.3%
+- Min CVR: 10%
+
+DATA:
+Google Sheet Link: [paste your link]
+
+ANALYZE:
+1. Data Sanity Check
+2. Search Term Clustering
+3. Scale-Up Opportunities
+4. Fix or Kill Decisions
+5. Placement Recommendations
+6. 7-Day Action Plan
+
+Use Thinking Mode. Be specific with campaign names and bids.</pre>
+
+                <ol style="margin-top: 15px;">
+                    <li>Open NEW Gemini chat</li>
+                    <li><strong>Turn ON "Thinking mode"</strong></li>
+                    <li>Paste complete prompt with your details</li>
+                    <li>Wait 2-5 minutes for processing</li>
+                </ol>
+            </div>
+
+            <h3>Step 5: Implement Recommendations</h3>
+            <div class="step">
+                <p><span class="step-number">5</span><strong>Take Action</strong></p>
+                
+                <p>Gemini will give you specific actions like:</p>
+                <pre>DAY 1: Scale Top Performers
+- Campaign: LED-Strip-Exact-UK
+- Keyword: "led strip lights"
+- Action: Increase bid $1.50 → $1.80 (+20%)
+- Expected: +$300 sales/week
+
+DAY 2: Kill Bleeding Keywords  
+- Campaign: LED-Broad-DE
+- Keyword: "home decor"
+- Action: NEGATE (wasted $234, 0 conversions)
+
+[... continues for 7 days]</pre>
+
+                <p style="margin-top: 15px;"><strong>Implementation Options:</strong></p>
+                <ul>
+                    <li><strong>Bulk Upload:</strong> Download Amazon bulk file → Make changes → Upload back</li>
+                    <li><strong>Manual UI:</strong> Make changes one-by-one in Campaign Manager</li>
+                </ul>
+            </div>
+
+            <div class="key-points">
+                <h4>🎯 Key Benefits - Account Holder 3</h4>
+                <ul>
+                    <li><strong>Time Saved:</strong> 10-15 hours analysis → 30 minutes</li>
+                    <li><strong>Accuracy:</strong> Data-driven decisions, no guesswork</li>
+                    <li><strong>Scalability:</strong> 5 campaigns or 500 - same effort</li>
+                    <li><strong>ROI:</strong> Find $500-2000 in wasted spend monthly</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- COORDINATION -->
+        <div id="coordination" class="section">
+            <h2>🤝 Team Coordination</h2>
+            
+            <h3>Weekly Meeting Schedule</h3>
+            <div class="step">
+                <h4>Monday (30 mins) - Results Review</h4>
+                <ul>
+                    <li>Account Holder 3: Share last week PPC results</li>
+                    <li>Account Holder 1: Key insights from GPT analysis</li>
+                    <li>Account Holder 2: A+ content status update</li>
+                    <li>All: Set priorities for the week</li>
+                </ul>
+
+                <h4 style="margin-top: 20px;">Wednesday (15 mins) - Quick Check</h4>
+                <ul>
+                    <li>Any blockers?</li>
+                    <li>Quick wins to celebrate</li>
+                    <li>Adjustments needed</li>
+                </ul>
+
+                <h4 style="margin-top: 20px;">Friday (20 mins) - Plan Next Week</h4>
+                <ul>
+                    <li>Account Holder 3: Finalize action plan</li>
+                    <li>Account Holder 2: A+ content pipeline review</li>
+                    <li>All: Priorities for Monday</li>
+                </ul>
+            </div>
+
+            <h3>Communication Tools</h3>
+            <table>
+                <tr>
+                    <th>Tool</th>
+                    <th>Purpose</th>
+                    <th>Usage</th>
+                </tr>
+                <tr>
+                    <td>WhatsApp/Slack</td>
+                    <td>Daily updates</td>
+                    <td>Quick messages, screenshots</td>
+                </tr>
+                <tr>
+                    <td>Google Sheets</td>
+                    <td>Tracking dashboard</td>
+                    <td>Shared metrics, tasks</td>
+                </tr>
+                <tr>
+                    <td>Notion/Trello</td>
+                    <td>Project management</td>
+                    <td>Task assignments, deadlines</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- TOOLS & COSTS -->
+        <div id="tools-costs" class="section">
+            <h2>💰 Tools & Costs</h2>
+            
+            <table>
+                <tr>
+                    <th>Tool</th>
+                    <th>Who Needs</th>
+                    <th>Monthly Cost</th>
+                    <th>Annual Cost</th>
+                </tr>
+                <tr>
+                    <td>ChatGPT Plus</td>
+                    <td>Account Holder 1</td>
+                    <td>₹1,650</td>
+                    <td>₹19,800</td>
+                </tr>
+                <tr>
+                    <td>Claude Pro</td>
+                    <td>Account Holder 2</td>
+                    <td>₹1,650</td>
+                    <td>₹19,800</td>
+                </tr>
+                <tr>
+                    <td>Gemini Pro</td>
+                    <td>Account Holder 2 & 3</td>
+                    <td>₹1,650</td>
+                    <td>₹19,800</td>
+                </tr>
+                <tr>
+                    <td>Canva Pro</td>
+                    <td>Account Holder 2</td>
+                    <td>₹1,050</td>
+                    <td>₹12,600</td>
+                </tr>
+                <tr>
+                    <td><strong>TOTAL</strong></td>
+                    <td>All 3 Account Holders</td>
+                    <td><strong>₹6,000</strong></td>
+                    <td><strong>₹72,000</strong></td>
+                </tr>
+            </table>
+
+            <div class="step">
+                <h4>ROI Calculation:</h4>
+                <pre>Time Saved: 40 hours/month
+Value: 40 hrs × ₹500/hr = ₹20,000
+
+PPC Waste Reduced: ₹10,000-30,000/month
+
+Total Benefit: ₹30,000-50,000/month
+Tool Cost: -₹6,000/month
+------------------------
+Net Savings: ₹24,000-44,000/month
+
+Break-even: Month 1
+ROI: 400-700%</pre>
+            </div>
+        </div>
+
+        <!-- CRITICAL REMINDERS -->
+        <div id="critical-reminders" class="section">
+            <h2>⚠️ Critical Reminders</h2>
+            
+            <div class="warning">
+                <strong>Rule #1: GARBAGE IN = GARBAGE OUT</strong><br>
+                Vague prompts = Vague outputs. Be detailed and specific!
+            </div>
+
+            <div class="warning">
+                <strong>Rule #2: FUNDAMENTALS FIRST</strong><br>
+                AI can't fix bad listings, poor images, or broken products. Fix basics before optimizing!
+            </div>
+
+            <div class="warning">
+                <strong>Rule #3: ALWAYS HUMAN-IN-LOOP</strong><br>
+                Never blindly implement AI recommendations. Verify, test small, then scale.
+            </div>
+
+            <div class="step">
+                <h4>Common Mistakes to Avoid:</h4>
+                <ul>
+                    <li>❌ Skipping Thinking Mode in Gemini</li>
+                    <li>❌ Reusing old AI chats (always start fresh)</li>
+                    <li>❌ Not testing small before scaling</li>
+                    <li>❌ Ignoring category-specific norms</li>
+                    <li>❌ Uploading sensitive data (passwords, bank info)</li>
+                    <li>❌ Expecting 100% accuracy from Day 1</li>
+                    <li>❌ Chasing every new AI model</li>
+                </ul>
+            </div>
+
+            <div class="success">
+                <strong>Success Timeline:</strong><br>
+                Month 1: 60-70% accuracy (learning phase)<br>
+                Month 2: 75-85% accuracy (improving)<br>
+                Month 3+: 85-95% accuracy (mastery)
+            </div>
+        </div>
+
+        <footer>
+            <h3>🎓 Quick Start Checklist</h3>
+            <div style="text-align: left; max-width: 800px; margin: 20px auto;">
+                <h4 style="color: #FF9800;">Week 1 - Setup:</h4>
+                <ul>
+                    <li>☐ Create AI accounts (ChatGPT, Claude, Gemini)</li>
+                    <li>☐ Assign 3 account holders to roles</li>
+                    <li>☐ Download first Amazon reports</li>
+                    <li>☐ Create shared Google Sheet</li>
+                </ul>
+                
+                <h4 style="color: #FF9800; margin-top: 20px;">Week 2 - Test:</h4>
+                <ul>
+                    <li>☐ Account Holder 1: Create first Custom GPT</li>
+                    <li>☐ Account Holder 2: Extract first JSON</li>
+                    <li>☐ Account Holder 3: Run first PPC analysis</li>
+                    <li>☐ Schedule team meeting</li>
+                </ul>
+                
+                <h4 style="color: #FF9800; margin-top: 20px;">Week 3 - Implement:</h4>
+                <ul>
+                    <li>☐ Apply top 5 recommendations</li>
+                    <li>☐ Share GPTs with team</li>
+                    <li>☐ Brief designer on A+ content</li>
+                    <li>☐ Document results</li>
+                </ul>
+                
+                <h4 style="color: #FF9800; margin-top: 20px;">Week 4 - Scale:</h4>
+                <ul>
+                    <li>☐ Refine prompts</li>
+                    <li>☐ Measure ROI</li>
+                    <li>☐ Expand to more products</li>
+                    <li>☐ Celebrate wins! 🎉</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #666;">
+                <p><strong>Get Full Mega Prompts:</strong></p>
+                <p>Email: <a href="mailto:varnandigitweblanka@gmail.com" style="color: #FF9800;">varnandigitweblanka@gmail.com</a></p>
+                <p style="margin-top: 15px; font-size: 0.9em; opacity: 0.8;">
+                    Based on My Amazon Guy AI Masterclass Webinar<br>
+                    Speakers: Elizabeth Green, John Aspenol, Noah<br>
+                    Created for: LEDSone | DCVoltage | SRM Supplies | Homin GmbH
+                </p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
